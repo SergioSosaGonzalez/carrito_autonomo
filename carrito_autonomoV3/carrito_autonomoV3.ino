@@ -56,8 +56,8 @@ void setup() {
 
 void loop() {
     //Acciones autonomas
-    //movimientosAuto();
-    movimientosSensoresAbajo();
+    movimientosAuto();
+    //movimientosSensoresAbajo();
     delay(250);
 }
 
