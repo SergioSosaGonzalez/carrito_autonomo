@@ -13,6 +13,8 @@ int pwmvalizq = 197; //Esta variable es la que se modifica para variar la veloci
 
 int ubicacion;
 
+bool isAutonomo = false;
+
 //Funciones
 void adelante(int tiempo);
 void atras(int tiempo);
@@ -23,6 +25,7 @@ void izquierda(int tiempo);
 void detener();
 void ubicate();
 void movimientosAuto();
+void controlVoz(String message);
 
 void setup() {
   //configuración de los sensores de proximidad
@@ -56,10 +59,23 @@ void setup() {
 
 void loop() {
     //Acciones autonomas
-    movimientosAuto();
+    if(Serial.available()>0){
+      
+      message = Serial.readString();
+     // Serial.println("el Mensaje "  + message);
+      if (message == "1" || isAutonomo == true){
+        isAutonomo = true;
+         movimientosAuto();
+      }else{
+        controlVoz( message);
+        isAutonomo = false;
+      }
+     
+    }
     //movimientosSensoresAbajo();
     delay(250);
 }
+
 
 void adelante(int tiempo)
 {
@@ -119,6 +135,28 @@ void detener()
 {
  analogWrite(pwmtoder, 0);
  analogWrite(pwmtoizq, 0);
+}
+
+void controlVoz(String message){
+    if(message == "adelante"){
+      adelante(1000);
+   }
+   else if(message == "retroceder"){
+      atras(1000);
+    }
+    else if(message == "derecha"){
+      derecha(1000);
+      delay(900);
+      adelante(1000);
+    }
+    else if(message == "izquierda"){
+      izquierda(1000);
+      delay(900);
+      adelante(1000);
+    }
+   else if(message == "detener"){
+      detener();
+    }
 }
 
 void movimientosSensoresAbajo(){
