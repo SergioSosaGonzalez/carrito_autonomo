@@ -60,18 +60,18 @@ void setup() {
 void loop() {
     //Acciones autonomas
     if(Serial.available()>0){
-      
       message = Serial.readString();
      // Serial.println("el Mensaje "  + message);
-      if (message == "1" || isAutonomo == true){
+      if (message == "1"){
         isAutonomo = true;
-         movimientosAuto();
-      }else{
-        controlVoz( message);
+      }else{ 
         isAutonomo = false;
+        controlVoz( message);
       }
-     
     }
+    
+    if(isAutonomo) movimientosAuto();
+    
     //movimientosSensoresAbajo();
     delay(250);
 }
@@ -180,6 +180,7 @@ void movimientosAuto()
   ubicacion = ubicar();   //Lee distancia de frente
   if (ubicacion == 7) {            
     detener();
+    movimientosSensoresAbajo();
   } else {
     gira(ubicacion);
   }              
